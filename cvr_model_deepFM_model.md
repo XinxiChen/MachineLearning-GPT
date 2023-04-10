@@ -1,4 +1,5 @@
-### Create an deepFM model to predict ad conversion rate. The prompt is more complicated and will be added later.
+### Create an deepFM model to predict ad conversion rate.
+Note: The prompt is more complicated and will be added later.
 
 ```
 
@@ -173,6 +174,7 @@ data = {
 }
 ```
 
+Example Output:
 ```
 [[0. 1. 1. 0. 0. 0. 1. 0. 0. 1. 0. 1. 0. 1. 0. 0. 1. 0. 0. 1. 0. 1. 0. 0.
   1. 0. 0.]
