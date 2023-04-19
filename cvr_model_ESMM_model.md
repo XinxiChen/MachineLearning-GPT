@@ -5,15 +5,15 @@ Certainly! I'll guide you through the process of creating an ad conversion rate 
 Here are the steps to create the ESMM model using TensorFlow:
 
 1. Import required libraries:
-'''
+```
 import tensorflow as tf
 from tensorflow.keras.layers import Input, Dense, Embedding, Concatenate, Flatten
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
-'''
+```
 
 2. Define a function to create the base model for CTR and PCVR:
-'''
+```
 def create_base_model(input_dim, embedding_dim=16):
     inputs = Input(shape=(input_dim,))
     embedding = Embedding(input_dim, embedding_dim, input_length=input_dim)(inputs)
@@ -22,16 +22,16 @@ def create_base_model(input_dim, embedding_dim=16):
     output = Dense(1, activation='sigmoid')(hidden)
     model = Model(inputs=inputs, outputs=output)
     return model
-'''
+```
 
 3. Create the individual models for CTR and PCVR:
-'''
+```
 ctr_model = create_base_model(input_dim)
 pcvr_model = create_base_model(input_dim)
-'''
+```
 
 4. Define the ESMM model, which combines the CTR and PCVR models:
-'''
+```
 def esmm_model(ctr_model, pcvr_model):
     inputs = Input(shape=(input_dim,))
     ctr_output = ctr_model(inputs)
@@ -42,22 +42,22 @@ def esmm_model(ctr_model, pcvr_model):
     
     esmm = Model(inputs=inputs, outputs=[ctr_output, joint_output])
     return esmm
-'''
+```
 
 5. Instantiate the ESMM model:
-'''
+```
 esmm = esmm_model(ctr_model, pcvr_model)
-'''
+```
 
 6. Compile the model with appropriate loss functions and optimizer:
-'''
+```
 esmm.compile(optimizer=Adam(lr=0.001),
              loss=['binary_crossentropy', 'binary_crossentropy'],
              metrics=['accuracy'])
-'''
+```
 
 7. Train the ESMM model using your ad features (X) and labels for click (y_ctr) and post-click conversion (y_pcvr):
-'''
+```
 X_train, X_test, y_ctr_train, y_ctr_test, y_pcvr_train, y_pcvr_test = ...  # Load or preprocess your data
 
 # Compute the joint label for click and post-click conversion
@@ -67,7 +67,7 @@ y_joint_test = y_ctr_test * y_pcvr_test
 esmm.fit(X_train, [y_ctr_train, y_joint_train],
          validation_data=(X_test, [y_ctr_test, y_joint_test]),
          epochs=10, batch_size=32)
-'''
+```
 After training the model, you can use it to predict CTR and joint probability of click and post-click conversion. To get the post-click conversion rate, you can simply divide the joint probability by the predicted CTR.
 
 ### Prompt: Can you generate an example list of features for ads conversion rate model? And also classify them into different categories
@@ -111,7 +111,7 @@ Sure! Here's an example list of features for an ad conversion rate model, along 
 I'll provide you with an example of how to build an ad conversion rate model using the ESMM approach and TensorFlow, incorporating the features listed above. This example will include data preprocessing and sample data generation steps.
 
 1. Import required libraries:
-'''
+```
 import numpy as np
 import pandas as pd
 import tensorflow as tf
@@ -120,10 +120,10 @@ from sklearn.preprocessing import LabelEncoder, MinMaxScaler
 from tensorflow.keras.layers import Input, Dense, Embedding, Concatenate, Flatten
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
-'''
+```
 
 2. Generate sample data with the features mentioned:
-'''
+```
 np.random.seed(42)
 
 # Generate sample data
@@ -151,10 +151,10 @@ sample_data = pd.DataFrame({
     'click': np.random.randint(0, 2, sample_size),
     'post_click_conversion': np.random.randint(0, 2, sample_size)
 })
-'''
+```
 
 3. Preprocess the data:
-'''
+```
 # Preprocess categorical features using LabelEncoder
 categorical_columns = ['user_gender', 'user_location', 'user_device', 'user_interests', 'advertiser',
                        'ad_format', 'ad_size', 'ad_placement', 'ad_topic', 'publisher', 'page_content']
@@ -169,12 +169,12 @@ for col in categorical_columns:
 numerical_columns = ['user_age', 'time_of_day', 'day_of_week', 'user_session_duration', 'past_ctr', 'past_conversion_rate', 'ad_frequency', 'user_past_interactions']
 scaler = MinMaxScaler()
 sample_data[numerical_columns] = scaler.fit_transform(sample_data[numer
-'''
+```
 
 ### Prompt: please continue to generate the code. If the code is in python, please keep the format in code style.
 Apologies for the abrupt ending. Here's the continuation of the code.
 
-'''
+```
 ical_columns])
 
 # Split the data into features (X) and labels (y_ctr, y_pcvr)
@@ -188,10 +188,10 @@ X_train, X_test, y_ctr_train, y_ctr_test, y_pcvr_train, y_pcvr_test = train_test
 # Compute the joint label for click and post-click conversion
 y_joint_train = y_ctr_train * y_pcvr_train
 y_joint_test = y_ctr_test * y_pcvr_test
-'''
+```
 
 4. Define a function to create the base model for CTR and PCVR:
-'''
+```
 def create_base_model(input_dim, embedding_dim=16):
     inputs = Input(shape=(input_dim,))
     embedding = Embedding(input_dim, embedding_dim, input_length=input_dim)(inputs)
@@ -200,17 +200,17 @@ def create_base_model(input_dim, embedding_dim=16):
     output = Dense(1, activation='sigmoid')(hidden)
     model = Model(inputs=inputs, outputs=output)
     return model
-'''
+```
 
 5. Create the individual models for CTR and PCVR:
-'''
+```
 input_dim = X_train.shape[1]
 ctr_model = create_base_model(input_dim)
 pcvr_model = create_base_model(input_dim)
-'''
+```
 
 6. Define the ESMM model, which combines the CTR and PCVR models:
-'''
+```
 def esmm_model(ctr_model, pcvr_model):
     inputs = Input(shape=(input_dim,))
     ctr_output = ctr_model(inputs)
@@ -221,26 +221,26 @@ def esmm_model(ctr_model, pcvr_model):
     
     esmm = Model(inputs=inputs, outputs=[ctr_output, joint_output])
     return esmm
-'''
+```
 
 7. Instantiate the ESMM model:
-'''
+```
 esmm = esmm_model(ctr_model, pcvr_model)
-'''
+```
 
 8. Compile the model with appropriate loss functions and optimizer:
-'''
+```
 esmm.compile(optimizer=Adam(lr=0.001),
              loss=['binary_crossentropy', 'binary_crossentropy'],
              metrics=['accuracy'])
-'''
+```
 
 9. Train the ESMM model using the preprocessed data:
-'''
+```
 esmm.fit(X_train, [y_ctr_train, y_joint_train],
          validation_data=(X_test, [y_ctr_test, y_joint_test]),
          epochs=10, batch_size=32)
-'''
+```
 After training the model, you can use it to predict CTR and joint probability of click and post-click conversion. To get the post-click conversion rate, you can simply divide the joint probability by the predicted CTR.
 
 ### Prompt: please continue to generate the code. If the code is in python, please keep the format in code style.
@@ -249,28 +249,28 @@ Apologies for any confusion earlier. Here's the continuation of the code to make
 
 10. Make predictions using the trained ESMM model:
 
-'''
+```
 ctr_preds, joint_preds = esmm.predict(X_test)
-'''
+```
 
 11. Compute the predicted post-click conversion rate:
-'''
+```
 # Avoid division by zero when calculating PCVR
 epsilon = 1e-8
 predicted_pcvr = joint_preds / (ctr_preds + epsilon)
-'''
+```
 
 12. Evaluate the model performance:
 You can now evaluate the model's performance by comparing the predicted post-click conversion rates with the ground truth. You may use various metrics such as mean squared error, mean absolute error, or R-squared score depending on your requirements.
 
 For example, you can calculate the mean squared error using the following code:
 
-'''
+```
 from sklearn.metrics import mean_squared_error
 
 mse = mean_squared_error(y_pcvr_test, predicted_pcvr)
 print("Mean Squared Error:", mse)
-'''
+```
 
 You can further fine-tune the model, adjust the architecture, or try different preprocessing techniques to improve the model's performance.
 
